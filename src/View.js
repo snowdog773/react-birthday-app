@@ -25,7 +25,7 @@ const View = (props) => {
         onChange={props.dateInput}
       ></input>
 
-      <button onClick={props.startTimer}>press</button>
+      <button onClick={props.startTimer}>Click Me!</button>
     </>
   );
 };

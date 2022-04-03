@@ -2,14 +2,29 @@
 import React, { Component } from "react";
 import subtractTime from "./subtract-time.js";
 import View from "./View.js";
+import Counter from "./Counter.js";
+import "./style.css";
 
 class App extends Component {
   state = { birthdate: 0, dateInput: 0, monthInput: 0 };
 
   startTimer = () => {
-    let newBirthdate =
-      new Date(2022, this.state.monthInput, this.state.dateInput).getTime() -
-      new Date().getTime();
+    let year = new Date().getFullYear();
+    let newBirthdate;
+    if (
+      new Date(year, this.state.monthInput, this.state.dateInput) < new Date()
+    ) {
+      newBirthdate =
+        new Date(
+          year + 1,
+          this.state.monthInput,
+          this.state.dateInput
+        ).getTime() - new Date().getTime();
+    } else {
+      newBirthdate =
+        new Date(year, this.state.monthInput, this.state.dateInput).getTime() -
+        new Date().getTime();
+    }
     setInterval(() => {
       this.setState({ birthdate: newBirthdate });
       newBirthdate = newBirthdate - 1000;
@@ -17,9 +32,11 @@ class App extends Component {
   };
 
   render() {
+    const [years, days, hours, mins, seconds] = subtractTime(
+      this.state.birthdate
+    );
     return (
       <>
-        <p>{JSON.stringify(this.state)}</p>
         <View
           startTimer={() => this.startTimer()}
           dateInput={(e) => {
@@ -29,7 +46,7 @@ class App extends Component {
             this.setState({ monthInput: e.target.value });
           }}
         />
-        <h2>{subtractTime(this.state.birthdate)}</h2>
+        <Counter days={days} hours={hours} mins={mins} seconds={seconds} />
       </>
     );
   }

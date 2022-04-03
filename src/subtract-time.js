@@ -9,7 +9,7 @@ export default function subtractTime(difference) {
   const mins = Math.floor(hoursRemainder / 60000);
   const minsRemainder = hoursRemainder % 60000;
   const seconds = Math.floor(minsRemainder / 1000);
-  return `${days} days, ${hours} hours, ${mins} mins, ${seconds} seconds`;
+  // return `${days} days, ${hours} hours, ${mins} mins, ${seconds} seconds`;
   // return `years : ${years} \n days : ${days} \n hours : ${hours} \n mins : ${mins} \n seconds : ${seconds}`;
-  // return [years, days, hours, mins, seconds];
+  return [years, days, hours, mins, seconds];
 }
