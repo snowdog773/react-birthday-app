@@ -1,12 +1,14 @@
 /* eslint-disable no-loop-func */
 import React, { Component } from "react";
+import axios from "axios";
 import subtractTime from "./subtract-time.js";
 import View from "./View.js";
 import Counter from "./Counter.js";
+import Person from "./Person.js";
 import "./style.css";
 
 class App extends Component {
-  state = { birthdate: 0, dateInput: 0, monthInput: 0 };
+  state = { birthdate: 0, dateInput: 0, monthInput: 0, apiData: [] };
 
   startTimer = () => {
     let year = new Date().getFullYear();
@@ -29,6 +31,16 @@ class App extends Component {
       this.setState({ birthdate: newBirthdate });
       newBirthdate = newBirthdate - 1000;
     }, 1000);
+    ///API call
+    const APImonth = parseInt(this.state.monthInput) + 1;
+    axios
+      .get(
+        `https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/${APImonth}/${this.state.dateInput}`
+      )
+      .then((res) => {
+        console.log(res.data.births[0]);
+        this.setState({ apiData: res.data.births });
+      });
   };
 
   render() {
@@ -47,6 +59,10 @@ class App extends Component {
           }}
         />
         <Counter days={days} hours={hours} mins={mins} seconds={seconds} />
+        <h2>You Share a Birthday With</h2>
+        {this.state.apiData.map((e, index) => {
+          return <Person data={e} key={index} />;
+        })}
       </>
     );
   }
